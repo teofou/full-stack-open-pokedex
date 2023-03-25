@@ -39,25 +39,25 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       - name: Test Success
         uses: rjstone/discord-webhook-notify@v1
-        if: ${{ github.event_name == 'push' && success() }}
+        if: success()
         with:
           severity: info
-          details: New version deployed
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          details: Test Succeeded!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
       - name: Test Failure
         uses: rjstone/discord-webhook-notify@v1
-        if: ${{ github.event_name == 'push' && failure() }}
+        if: failure()
         with:
           severity: error
-          details: Build Failed!
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          details: Test Failed!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
       - name: Test Cancelled
         uses: rjstone/discord-webhook-notify@v1
-        if: ${{ github.event_name == 'push' && cancelled() }}
+        if: cancelled()
         with:
           severity: warn
-          details: Deploying Cancelled!
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          details: Test Cancelled!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
   tag_release:
     needs: [ simple_deployment_pipeline ]
     runs-on: ubuntu-20.04
